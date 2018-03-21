@@ -11,6 +11,9 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "ejs": "^2.5.6",
     "express": "^4.15.2"
   },
