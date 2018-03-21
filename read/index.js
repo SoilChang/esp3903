@@ -12,6 +12,16 @@ const cors = require('cors');
 
 // const baseUrl = "https://esp3903.herokuapp.com";
 const baseUrl = "http://localhost:5000";
+let data = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+];
 class App {
     constructor() {
         this.app = express()
@@ -42,13 +52,13 @@ class App {
         //     console.error(err);
         // })
 
-        fetch(`${baseUrl}/api/data`, {
-            method: "GET",
-        }).then(rsp => {
-            console.log(rsp.body);
-        }).catch(err => {
-            console.error(err);
-        })
+        // fetch(`${baseUrl}/api/data`, {
+        //     method: "GET",
+        // }).then(rsp => {
+        //     console.log(rsp.body);
+        // }).catch(err => {
+        //     console.error(err);
+        // })
 
     }
 
@@ -86,7 +96,7 @@ class App {
                 let r = parseInt(coord.split(".")[0])
                 let c = parseInt(coord.split(".")[1])
                 let voltage = parseFloat(entry.split("/")[1])
-
+                data[r][c] = voltage;
                 fetch(`${baseUrl}/api/update`, {
                     method: "POST",
                     body: JSON.stringify({

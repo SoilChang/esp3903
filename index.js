@@ -21,10 +21,9 @@ app.use(bodyParser.urlencoded({
 
 app.get('/', (req, res) => res.send('ESP3903 Data Distribution Center'))
 app.get("/api/data/", (req, res) => {
-  res.status(200).send({
-    "success": true,
-    "data": data
-  });
+  res.status(200).send(
+    data
+  );
 })
 
 app.post("/api/update", (req, res) => {
