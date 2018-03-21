@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 const fetch = require("node-fetch");
 const cors = require('cors');
 
+
+// const baseUrl = "https://esp3903.herokuapp.com";
+const baseUrl = "http://localhost:5000";
 class App {
     constructor() {
         this.app = express()
@@ -23,19 +26,11 @@ class App {
 
 
 
-        this.data = [
-            [],
-            [],
-            [],
-            []
-        ];
-
-
-        // fetch("http://localhost:5000/api/update", {
+        // fetch(`${baseUrl}/api/update`, {
         //     method: "POST",
         //     body: JSON.stringify({
-        //         "row": 1,
-        //         "col": 1,
+        //         "row": 2,
+        //         "col": 2,
         //         "voltage": 20
         //     }),
         //     headers: {
@@ -46,6 +41,14 @@ class App {
         // }).catch(err => {
         //     console.error(err);
         // })
+
+        fetch(`${baseUrl}/api/data`, {
+            method: "GET",
+        }).then(rsp => {
+            console.log(rsp.body);
+        }).catch(err => {
+            console.error(err);
+        })
 
     }
 
@@ -83,7 +86,22 @@ class App {
                 let r = parseInt(coord.split(".")[0])
                 let c = parseInt(coord.split(".")[1])
                 let voltage = parseFloat(entry.split("/")[1])
-                this.data[r][c] = voltage;
+
+                fetch(`${baseUrl}/api/update`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        "row": r,
+                        "col": c,
+                        "voltage": voltage
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                }).then(rsp => {
+                    console.log(rsp.body);
+                }).catch(err => {
+                    console.error(err);
+                })
             } catch (err) {
                 console.log(err)
             }

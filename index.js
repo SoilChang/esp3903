@@ -14,12 +14,17 @@ const data = [
 ];
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 
 app.get('/', (req, res) => res.send('ESP3903 Data Distribution Center'))
 app.get("/api/data/", (req, res) => {
-  res.status(200).send(this.data);
+  res.status(200).send({
+    "success": true,
+    "data": data
+  });
 })
 
 app.post("/api/update", (req, res) => {
@@ -28,15 +33,19 @@ app.post("/api/update", (req, res) => {
   const col = req.body.col;
   const voltage = req.body.voltage;
   if (!isNil([row, col, voltage])) {
-    res.status(400).send(`Parameter missing: 
+    res.status(400).send({
+      msg: `Parameter missing: 
       row:${row}, col:${col}, voltage:${voltage} 
-    `)
+    `
+    })
     return;
   }
 
 
   data[row][col] = voltage;
-  res.status(200).send(`row:${row}, col:${col}, voltage:${voltage}`);
+  res.status(200).send({
+    msg: `row:${row}, col:${col}, voltage:${voltage}`
+  });
 });
 
 
