@@ -5,23 +5,47 @@ const serialport = require('serialport');
 const readline = require('readline');
 const sp_readline = serialport.parsers.Readline;
 const express = require("express");
+const bodyParser = require('body-parser');
+const fetch = require("node-fetch");
 const cors = require('cors');
 
 class App {
     constructor() {
         this.app = express()
         this.assembleRoutes(this.app);
-        this.app.use(cors());
+        this.config(this.app);
+
         this.app.listen(3000, () => {
             console.log('***The App listening on port 3000!***')
             console.log("")
-            this.readSerialInput()
+            // this.readSerialInput()
         })
 
 
+
         this.data = [
-            [],[],[],[]
+            [],
+            [],
+            [],
+            []
         ];
+
+
+        // fetch("http://localhost:5000/api/update", {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         "row": 1,
+        //         "col": 1,
+        //         "voltage": 20
+        //     }),
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        // }).then(rsp => {
+        //     console.log(rsp.body);
+        // }).catch(err => {
+        //     console.error(err);
+        // })
 
     }
 
@@ -31,6 +55,14 @@ class App {
         this.app.get("/api/data/", (req, res) => {
             res.status(200).send(this.data)
         })
+    }
+
+    config(app) {
+        app.use(cors());
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({
+            extended: false
+        }));
     }
 
 
